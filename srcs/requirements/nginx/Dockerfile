@@ -1,4 +1,21 @@
 FROM debian:11
-RUN apt-get -y update && apt-get -y install nginx && apt install vim -y 
-EXPOSE 443/tcp
+EXPOSE 443
+
+RUN apt update && apt -y install nginx && apt install -y vim && apt install -y openssl
+
+RUN mkdir -p /etc/nginx/ssl
+# This line generates a self-signed SSL certificate using OpenSSL. 
+RUN openssl req -x509 -nodes -out /etc/nginx/ssl/Dan.crt -keyout /etc/nginx/ssl/Dan.key -subj "/C=BE/ST=BC/L=Brussels/O=19/OU=19/CN=dspilleb.42.fr/UID=login"
+
+# Create folder for Nginx configs
+RUN mkdir -p /var/run/nginx
+
+# Replace the nginx image conf with our local conf
+#COPY  /conf/nginx.conf /var/run/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/index.html /var/www/html/
+
+RUN chmod 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
