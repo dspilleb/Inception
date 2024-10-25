@@ -13,6 +13,7 @@ RUN mkdir -p /var/run/nginx
 # Replace the nginx image conf with our local conf
 #COPY  /conf/nginx.conf /var/run/nginx/nginx.conf
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+# page temporaire
 COPY ./conf/index.html /var/www/html/
 
 RUN chmod 755 /var/www/html
