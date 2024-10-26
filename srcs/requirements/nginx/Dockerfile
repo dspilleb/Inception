@@ -1,13 +1,14 @@
 FROM debian:11
 EXPOSE 443
 
-RUN apt update \
+RUN apt update -y \
 	&& apt upgrade -y \
 	&& apt -y install nginx \
 	&& apt install -y openssl
 
 RUN mkdir -p /etc/nginx/ssl
-# This line generates a self-signed SSL certificate using OpenSSL. 
+
+# generate a self-signed SSL certificate using OpenSSL. 
 RUN openssl req -x509 \
 	-newkey rsa:2048 \
 	-nodes \
@@ -20,7 +21,7 @@ RUN mkdir -p /var/run/nginx
 
 # Replace the nginx image conf with our local conf
 #COPY  /conf/nginx.conf /var/run/nginx/nginx.conf
- COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 RUN chmod 755 /var/www/html
 RUN chown -R www-data:www-data /var/www/html
