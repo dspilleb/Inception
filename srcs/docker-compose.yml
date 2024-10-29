@@ -10,3 +10,7 @@ services:
         build: ./requirements/mariadb/
         env_file: .env
         restart: on-failure
+    wordpress:
+        container_name: wordpress
+        build: ./requirements/wordpress/
+        restart: on-failure

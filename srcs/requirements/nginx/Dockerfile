@@ -1,10 +1,10 @@
 FROM debian:11
 EXPOSE 443
 
-RUN apt update -y \
-	&& apt upgrade -y \
-	&& apt -y install nginx \
-	&& apt install -y openssl
+RUN apt-get update -y \
+	&& apt-get upgrade -y \
+	&& apt-get -y install nginx \
+	&& apt-get install -y openssl
 
 RUN mkdir -p /etc/nginx/ssl
 
