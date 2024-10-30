@@ -9,6 +9,8 @@ services:
           - wordpress
         networks: 
           - inception
+        volumes:
+          - wordpress_data:/var/www/wordpress
     mariadb:
         container_name: mariadb
         build: ./requirements/mariadb/
@@ -18,6 +20,8 @@ services:
           - inception
         expose:
           - "3306"
+        volumes:
+          - mariadb_data:/var/lib/mysql
     wordpress:
         container_name: wordpress
         build: ./requirements/wordpress/
@@ -28,6 +32,22 @@ services:
           - inception
         expose:
           - "9000"
+        volumes:
+          - wordpress_data:/var/www/wordpress
 networks:
     inception:
         driver: bridge
+  
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/dan/data/wordpress #changer plus tard
+      o: bind
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/dan/data/mariadb
+      o: bind
