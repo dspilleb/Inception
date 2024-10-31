@@ -25,6 +25,7 @@ services:
     wordpress:
         container_name: wordpress
         build: ./requirements/wordpress/
+        env_file: .env
         restart: on-failure
         depends_on: 
           - mariadb
@@ -43,11 +44,11 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/dan/data/wordpress #changer plus tard
+      device: ./volumes/wordpress
       o: bind
   mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/dan/data/mariadb
+      device: ./volumes/mariadb
       o: bind

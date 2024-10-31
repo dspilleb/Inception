@@ -11,20 +11,17 @@ all:
 	docker-compose -f $(COMPOSE_FOLDER)/docker-compose.yml up --build -d
 	echo $(YELLOW)"Build and launch over -"$(NONE)
 
-down: 
-	docker-compose -f $(COMPOSE_FOLDER)/docker-compose.yml down
-	echo $(ORANGE)"Services Down"$(NONE)
-
-up: 
-	docker-compose -f $(COMPOSE_FOLDER)/docker-compose.yml up -d
-	echo $(YELLOW)"Services up"$(NONE)
-
 clean: 
 	echo $(BLUE)"- removing containers, images and network -"$(NONE)
 	docker-compose -f $(COMPOSE_FOLDER)/docker-compose.yml down --rmi all
 	docker container prune -f
 
+fclean: 
+	echo $(ORANGE)"- removing containers, images and network and volumes -"$(NONE)
+	docker-compose -f $(COMPOSE_FOLDER)/docker-compose.yml down -v --rmi all
+	docker container prune -f
+
 re: clean all
 
-.SILENT: all clean down up
-.PHONY: all clean down up
+.SILENT: all clean fclean
+.PHONY: all clean fclean
