@@ -3,7 +3,7 @@
 if [ ! -f /var/www/wordpress/wp-config.php ]; then
 
 	# wait for mariadb to be launched
-	while ! mysqladmin ping --host=mariadb --user=${MYSQL_ROOT_USER} --password=${MYSQL_ROOT_PASS}; do
+	while ! mysqladmin ping --host=mariadb --user=${MYSQL_USER} --password=${MYSQL_PASS} 2> /dev/null; do
 		sleep 2
 	done
 
@@ -12,8 +12,8 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 	# Link wordpress to the database
 	wp config create	--allow-root \
 						--dbname=${MYSQL_NAME} \
-						--dbuser=${MYSQL_ROOT_USER} \
-						--dbpass=${MYSQL_ROOT_PASS} \
+						--dbuser=${MYSQL_USER} \
+						--dbpass=${MYSQL_PASS} \
 						--dbhost=mariadb:3306 --path='/var/www/wordpress'
 	# Config wordpress and create admin account
 	wp core install --allow-root \

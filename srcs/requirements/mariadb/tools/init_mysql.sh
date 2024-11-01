@@ -1,20 +1,22 @@
-#!/bin/bash
+#! /bin/bash
 mysqld_safe &
 
-until mysqladmin ping; do
+until mysqladmin ping 2> /dev/null; do
 	sleep 2
 done
 
-mysql -u root << END
-	CREATE DATABASE IF NOT EXISTS ${MYSQL_NAME};
+if [ ! -d "/var/lib/mysql/${MYSQL_NAME}" ]; then
 
-	CREATE USER IF NOT EXISTS '${MYSQL_ROOT_USER}'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASS}';
-	GRANT ALL PRIVILEGES ON ${MYSQL_NAME}.* TO ${MYSQL_ROOT_USER}@'%' IDENTIFIED BY '${MYSQL_ROOT_PASS}';
+	mysql -u root << END
+		CREATE DATABASE IF NOT EXISTS ${MYSQL_NAME};
 
-	ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASS}';
+		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASS}';
+		GRANT ALL PRIVILEGES ON ${MYSQL_NAME}.* TO ${MYSQL_USER}@'%' IDENTIFIED BY '${MYSQL_PASS}';
 
-	FLUSH PRIVILEGES;
+		ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASS}';
+		FLUSH PRIVILEGES;
 END
+fi
 
 mysqladmin -u root --password=${MYSQL_ROOT_PASS} shutdown
 
