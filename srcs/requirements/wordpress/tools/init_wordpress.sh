@@ -14,7 +14,8 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 						--dbname=${MYSQL_NAME} \
 						--dbuser=${MYSQL_USER} \
 						--dbpass=${MYSQL_PASS} \
-						--dbhost=mariadb:3306 --path='/var/www/wordpress'
+						--dbhost=mariadb \
+						--path='/var/www/wordpress'
 	# Config wordpress and create admin account
 	wp core install --allow-root \
 					--url=${DOMAIN_NAME} \
@@ -22,7 +23,7 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 					--admin_user=${WORDPRESS_ADMIN} \
 					--admin_password=${WORDPRESS_ADMIN_PASS} \
 					--admin_email=${WORDPRESS_ADMIN_MAIL} \
-					--skip-email \
+					--skip-email
 	# create an user
 	wp user create ${WORDPRESS_USER} ${WORDPRESS_USER_MAIL} \
 					--user_pass=${WORDPRESS_USER_PASS} \
